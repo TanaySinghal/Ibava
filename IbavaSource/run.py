@@ -7,7 +7,6 @@ VARIABLE, CODE = 'VARIABLE', 'CODE'
 PLUS, MINUS, TIMES, DIVIDE, EXP, MOD = 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'EXP', 'MOD'
 
 endProgram = False
-inShell = False
 line_number = -1
 line_output = ""
 
@@ -164,10 +163,8 @@ class Interpreter(object):
 
 def main():
 
-    readFile()
+    print "nothing to do here..."
     return
-
-    print "This input is not valid..."
 
 def preFormatCode(lines):
     lines = [i.replace("\t", "") for i in lines]
@@ -188,71 +185,6 @@ def preFormatCode(lines):
 
     return lines
 
-
-def readFile():
-    #JUST INITIALIZING
-
-    #Get file path
-    filePath = ""
-    while True:
-        print "Type name of file to run."
-        fileName = raw_input('>> run ')
-
-        if fileName == "quit":
-            return
-            
-        if fileName == "shell":
-            doShell()
-            return
-
-        if not "." in fileName:
-            fileName = fileName + ".pseudo"
-            filePath = "../Scripts/" + fileName
-            break
-        else:
-            print "Please enter plain file name without specifying file format\n"
-            continue
-
-
-    #split by line number
-    codeFile = open(filePath)
-    lines = codeFile.read().split('\n')
-    lines = preFormatCode(lines)
-
-    #BEGIN READING CODE
-    #for index in xrange(len(lines)):
-
-    global line_number
-
-    #because we increment early, this needs to be -1
-    while line_number < len(lines) - 1:
-
-        #if we are within while loop
-        #This needs to be put after loop is created..
-        #Also we need to loop one more time.. not just skip to the end!!
-
-        line_number += 1
-
-        #get text
-        line = lines[line_number]
-
-
-        #LOOP
-        loop_session = loopBlock(line)
-        if loop_session == "continue":
-            continue
-
-        #IF
-        current_session = ifStatementBlock(line)
-        if current_session == "continue":
-            #print ifSessions
-            continue
-            
-        #initialize interpretor for this line
-        readCode(line)
-
-        if endProgram:
-            break
 
 def runCode(givenCode):
     #change so it returns printed code
@@ -316,46 +248,6 @@ def getLineOutput(line_output, line_number):
         _outputString += str(line_output)
 
     return _outputString
-
-def doShell():
-    print "Entering shell..."
-
-    global inShell
-
-    inShell = True
-    while True:
-        #READ FILE
-        try:
-            # To run under Python3 replace 'raw_input' call
-            # with 'input'
-            text = raw_input('>> ')
-        except EOFError:
-            break
-
-        if not text:
-            continue
-        elif text == "quit":
-            inShell = False
-            break
-        elif text == "help":
-            help()
-            continue
-
-        #remove all white spaces
-        text = text.replace(" ", "")
-
-        current_session = ifStatementBlock(text)
-
-        if current_session == "continue":
-            print ifSessions
-            continue
-
-        #initialize interpretor for this line
-
-        readCode(text)
-
-        if endProgram:
-            break
 
 #MAIN METHODS
 def loopBlock(line):
@@ -534,43 +426,14 @@ def printOutput(_value):
     return _value
 
 def readCode(_text):
-    global inShell
-
-    _inShell = inShell
-
-    #Check for loop session again??
-    #Maybe this will work
-
     #if line prints an output, print it...
     if printingOutput(_text):
         global line_output
         line_output = printOutput(_text[6:])
         #return printOutput(_text[6:])
 
-    #if we are in shell.
-    if _inShell:
-        if howManySet(_text) == 1:
-            #you're not always going to set variables..
-            parseAndCreateOrSetVariable(_text)
-
-        #if we are in shell
-        elif howManyComparison(_text) == 1:
-            print comparison(_text)
-
-        elif howManyOperator(_text) <= 1:
-            interpreter = Interpreter(_text)
-            print interpreter.expr()
-
-        elif howManyOperator(_text) > 1:
-            printError("ERROR: Can only handle one operator (for now)")
-
-        else:
-            printError("ERROR: Code could not be read")
-
-    #If we are running a text file
-    #howmanyset is a method in comparison)methods
-    #howmanyset counts how many equal signs
-    elif howManySet(_text) == 1:
+    #count amount of equal signs
+    if howManySet(_text) == 1:
         #Code reaches up to here
         parseAndCreateOrSetVariable(_text)
 
@@ -578,14 +441,3 @@ def printError(_errorMessage):
     global endProgram
     print _errorMessage
     endProgram = True
-
-#Evaluating comparison
-#end evaluating comparison
-
-def help():
-    #print to file
-    help_file = open("help.txt", 'r')
-    print help_file.read()
-
-if __name__ == '__main__':
-    main()

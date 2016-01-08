@@ -1,4 +1,3 @@
-output ""
 output "RUNNING IF EXAMPLE"
 X = 7
 
@@ -13,4 +12,3 @@ else
 
 end if
 output "DONE RUNNING IF EXAMPLE"
-output ""

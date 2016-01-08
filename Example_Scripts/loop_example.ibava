@@ -1,4 +1,3 @@
-output ""
 output "RUNNING LOOP EXAMPLE"
 X = 0
 
@@ -9,4 +8,3 @@ end loop
 output "Loop worked if X is 5"
 output "X: " + X
 output "DONE RUNNING LOOP EXAMPLE"
-output ""
