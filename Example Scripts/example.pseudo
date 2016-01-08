@@ -1,0 +1,93 @@
+X = 0
+Y = 0
+
+//WHILE LOOP
+output "Before X: " + X
+output "Before Y: " + Y
+
+COUNT = 0
+loop while COUNT < 5
+	X = X + COUNT
+	Y = Y + X
+	if COUNT >= 3 then
+		output ""
+		output "COUNT: " + COUNT
+		output "X: " + X
+		output "Y: " + Y
+	end if
+	COUNT = COUNT + 1
+end loop
+
+output ""
+output "After X: " + X
+output "After Y: " + Y
+
+output ""
+output "Now running for loop"
+output ""
+
+//FOR LOOP
+X = 0
+Y = 0
+output "Before X: " + X
+output "Before Y: " + Y
+
+loop COUNT from 0 to 5
+	X = X + COUNT
+	Y = Y + X
+	//if count is an odd number
+	if COUNT mod 2 == 0 then
+		output ""
+		output "COUNT: " + COUNT
+		output "X: " + X
+		output "Y: " + Y
+	end if
+end loop
+
+output ""
+output "After X: " + X
+output "After Y: " + Y
+
+// NESTED FOR LOOP
+X = 0
+output ""
+output "Before X: " + X
+output "Doing nested loop"
+loop I from 1 to 5
+	loop J from 1 to 5
+		if I > 2 then
+			X = X + 1
+		end if
+	end loop
+end loop
+
+output "After X: " + X
+
+//CONTINUE AND BREAK
+output ""
+output "Continue and break testing"
+
+X = 0
+Y = 0
+COUNT = 0
+
+output "Before X: " + X
+output "Before Y: " + Y
+output "Before COUNT: " + COUNT
+
+loop while COUNT < 5
+	X = X + COUNT
+	output "X is:" + X
+	if COUNT > 3 then
+		output "BROKEN OUT"
+		break
+		output "BROKEN OUT NOT SUCCESSFUL"
+	end if
+	Y = Y + COUNT
+	COUNT = COUNT + 1
+end loop
+
+output "BROKEN OUT SUCCESSFUL"
+output "After X: " + X
+output "After Y: " + Y
+output "After COUNT: " + COUNT

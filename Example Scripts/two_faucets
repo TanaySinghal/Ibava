@@ -1,0 +1,10 @@
+FAUCETONE = true
+FAUCETTWO = false
+
+if FAUCETONE then
+	if FAUCETTWO then
+		output “Too many faucets on”
+	end if
+else
+	output “No faucets are on”
+end if

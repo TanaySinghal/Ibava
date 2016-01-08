@@ -1,0 +1,26 @@
+output ""
+output "RUNNING IF EXAMPLE"
+output ""
+
+X = 25
+
+if X < 10 then
+	loop COUNT from 0 to 5
+		output X + " is greater than 10"
+		X = X + 5
+		//The below if statement should be ignored
+		if X > 10 then
+			output "Yep"
+		end if
+	end loop
+else
+	loop COUNT from 0 to 5
+		output "LOL This should never happen"
+	end loop
+end if
+
+output "COUNT: " + COUNT
+
+end if
+output "DONE RUNNING IF EXAMPLE"
+output ""
