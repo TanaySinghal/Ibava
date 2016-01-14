@@ -33,7 +33,7 @@ class Token(object):
     def __repr__(self):
         return self.__str__()
 
-
+#Class is called from variable_methods.py
 class Interpreter(object):
     def __init__(self, text):
         # client string input, e.g. "3+5"
@@ -54,8 +54,8 @@ class Interpreter(object):
         """
         text = self.text
 
-        # is self.pos index past the end of the self.text ?
-        # if so, then return EOF token because there is no more
+        # is self.pos index past the end of the self.tex...
+        # then return EOF token because there is no more
         # input left to convert into tokens
         if self.pos > len(text) - 1:
             return Token(EOF, None)
@@ -79,7 +79,6 @@ class Interpreter(object):
             return token
 
         if isOperator(current_char):
-            #this only works with one character
             operatorType = mapOperatorToToken(current_char)
             token = Token(operatorType, current_char)
             self.pos += 1
@@ -136,26 +135,26 @@ class Interpreter(object):
         return _token
 
     def expr(self):
-        #expr -> INTEGER OPERATOR INTEGER
-        #LEFT SIDE CAN BE A VARIABLE
+        #format -> INTEGER OPERATOR INTEGER
 
         # set current token to the first token taken from the input
         self.current_token = self.get_next_token()
 
-
-        # if left side is a variable, get variable name
+        # get left side value, even if it is a variable
         left = self.readValue()
 
+        # get operator
         op = self.current_token
         if isTypeOperator(op.type):
             self.eat(self.current_token.type)
-        #if there is no operator after one expression, leave
+        #if there is no operator after first number, leave
         else:
             return left.value
 
-        # get value of right side digits
+        # get right side value, even if it is a variable
         right = self.readValue()
 
+        # perform operation
         result = performOperation(op.type, left.value, right.value)
 
         return result
@@ -187,31 +186,31 @@ def preFormatCode(lines):
 
 
 def runCode(givenCode):
-    #change so it returns printed code
+    #make each line of code an element in array
     lines = givenCode.split('\n')
     lines = preFormatCode(lines)
-
     outputString = ""
-    #BEGIN READING CODE
-    #for index in xrange(len(lines)):
-    global line_number
 
+    global line_number
+    #because we increment early, line_number is -1 rather than 0
     line_number = -1
 
-    #because we increment early, this needs to be -1
-    while line_number < len(lines) - 1:
+    #clear out all sessions
+    variables[:] = []
+    ifSessions[:] = []
+    loopSessions[:] = [] 
+    print variables
 
-        #if we are within while loop
-        #This needs to be put after loop is created..
-        #Also we need to loop one more time.. not just skip to the end!!
+    #loop through each line of code
+    while line_number < len(lines) - 1:
 
         line_number += 1
 
         #get text
         line = lines[line_number]
 
-
         global line_output
+
         #LOOP
         loop_session = loopBlock(line)
         if loop_session == "continue":
@@ -227,7 +226,6 @@ def runCode(givenCode):
             
         #read output
         readCode(line)
-        #codeRead = readCode(line)
         
         outputString += getLineOutput(line_output, line_number)
         line_output = None
@@ -343,7 +341,8 @@ def ifStatementBlock(_text):
         condition = getConditionFromIfStatement(_text)
         conditionIsTrue = comparison(condition)
         if conditionIsTrue is "true":
-            #the 0 here is the stage. 0 means if, 1 means else if, 2 means else
+            #the 0 here is the stage. 0 means if,
+            #1 means else if, 2 means else
             addSession(0)
             setSessionTrue(0)
             return "continue"
@@ -434,7 +433,7 @@ def readCode(_text):
 
     #count amount of equal signs
     if howManySet(_text) == 1:
-        #Code reaches up to here
+        #method is in variable_methods.py
         parseAndCreateOrSetVariable(_text)
 
 def printError(_errorMessage):

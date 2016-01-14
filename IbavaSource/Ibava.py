@@ -5,25 +5,39 @@ root = Tk()
 root.title("Ibava - IB Pseudocode")
 root.configure(bg = "#3366cc")
 
-runButton = 'Run'
 
-#Create method for button action (found in example)
-action = lambda x = runButton: click_event()
-
-#create input display
+#input display
 inputTextField = Text(root, width = 80, height = 20, bg = "#ffffcc", bd=0, highlightthickness=0)
 inputTextField.grid(row = 0, column = 0, columnspan = 5, padx = 20, pady = (20,5))
 
-#create button
+#button
+runButton = 'Run'
+#when button is clicked, method click_event() is called
+action = lambda x = runButton: click_event()
 button_style = 'raised'
 button = Button(root, text = runButton, width = 5, height = 1, command = action)
 button.grid(row = 1, column = 2, sticky = 'nesw')
 
-#create output display
+#output display
 outputTextField = Text(root, width = 80, height = 10, bg = "#ffffcc", bd=0, highlightthickness=0)
 outputTextField.grid(row = 2, column = 0, columnspan = 5, padx = 20, pady = (5,20))
 
-#This is the menu bar class
+#This method runs when button is clicked
+def click_event():
+    import run as pseudocode
+    #print what you input
+    inputText = str(inputTextField.get("1.0",END))
+    #run the entire code
+    #you might have to reset global line_number.. needs to reset
+    output = pseudocode.runCode(inputText)
+
+    #return a string, rather than printing, and put it here
+
+    #print new ouput
+    outputTextField.delete("1.0", END)
+    outputTextField.insert(END, output) 
+
+#MenuBar class is responsible for creating functioning menu items
 class MenuBar:
     def __init__(self, root):
         self.root = root
@@ -77,22 +91,7 @@ class MenuBar:
             f.flush()
         self.root.title(self.filename)  # Display the filename in window
 
-menu = MenuBar(root)
-
-#This method runs when button is clicked
-def click_event():
-	import run as pseudocode
-	#print what you input
-	inputText = str(inputTextField.get("1.0",END))
-	#run the entire code
-	#you might have to reset global line_number.. needs to reset
-	output = pseudocode.runCode(inputText)
-
-	#return a string, rather than printing, and put it here
-
-	#print new ouput
-	outputTextField.delete("1.0", END)
-	outputTextField.insert(END, output)		
+menu = MenuBar(root)	
 
 # Loops app. Must be at the end like this.
 mainloop()

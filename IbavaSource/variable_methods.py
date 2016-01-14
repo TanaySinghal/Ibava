@@ -29,18 +29,15 @@ def createOrSetVariable(varName, rightSide):
     return
 
 def interpretVarType(_value):
-    
-    #if this is inequality...
     from run import howManyComparison
     from run import howManyOperator
     from run import Interpreter
 
+    #if this is a comparison
     if howManyComparison(_value) == 1:
         return "BOOLEAN", comparison(_value)
 
-    #if this is operation...
-    #THIS IS WHAT IS CAUSING PROBLEM
-
+    #if this is operation
     if howManyOperator(_value) == 1:
         _interpreter = Interpreter(_value)
         return "INTEGER", _interpreter.expr()

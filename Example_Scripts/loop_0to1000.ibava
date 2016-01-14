@@ -1,0 +1,7 @@
+output "RUNNING LOOP EXAMPLE"
+
+loop COUNT from 0 to 1000
+	output COUNT
+end loop
+
+output "DONE RUNNING LOOP EXAMPLE"
